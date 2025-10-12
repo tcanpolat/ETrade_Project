@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ETICARET.DataAccess.Concrete.EfCore
 {
-    internal class SeedDatabase
+    public class SeedDatabase
     {
     }
 }
