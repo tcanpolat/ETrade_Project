@@ -1,3 +1,7 @@
+using ETICARET.WebUI.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 namespace ETICARET.WebUI
 {
     public class Program
@@ -8,6 +12,42 @@ namespace ETICARET.WebUI
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddRazorPages();
+
+            builder.Services.AddDbContext<ApplicationIdentityDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection"))
+            );
+
+            // Identity Servisleri
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                            .AddEntityFrameworkStores<ApplicationIdentityDbContext>()
+                            .AddDefaultTokenProviders();
+            
+            // Seed Identity
+            var userManager = builder.Services.BuildServiceProvider().GetService<UserManager<ApplicationUser>>();
+            var roleManager = builder.Services.BuildServiceProvider().GetService<RoleManager<IdentityRole>>();
+
+            // Identity Configuration
+            builder.Services.Configure<IdentityOptions>(
+                options =>
+                {
+                    options.Password.RequireNonAlphanumeric = true;
+                    options.Password.RequireDigit = true;
+                    options.Password.RequireLowercase = true;
+                    options.Password.RequireUppercase = true;
+                    options.Password.RequiredLength = 6;
+
+                    options.Lockout.MaxFailedAccessAttempts = 5;
+                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                    options.Lockout.AllowedForNewUsers = true;
+
+                    options.User.RequireUniqueEmail = true;
+                    options.SignIn.RequireConfirmedEmail = true;
+                    options.SignIn.RequireConfirmedPhoneNumber = false;
+                }     
+                
+           );
 
             var app = builder.Build();
 
