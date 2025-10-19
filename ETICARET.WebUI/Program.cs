@@ -3,6 +3,7 @@ using ETICARET.Business.Concrete;
 using ETICARET.DataAccess.Abstract;
 using ETICARET.DataAccess.Concrete.EfCore;
 using ETICARET.WebUI.Identity;
+using ETICARET.WebUI.Middlewares;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -94,7 +95,8 @@ namespace ETICARET.WebUI
             SeedDatabase.Seed();
 
             app.UseStaticFiles();
-            // Custom Static Files Middleware Yazýlacak
+            // Custom Static Files Middleware
+            app.CustomStaticFiles(); // modules =>  node_modules 
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
