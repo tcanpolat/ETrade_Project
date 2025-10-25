@@ -119,9 +119,16 @@ namespace ETICARET.WebUI
                 );
                 endpoints.MapControllerRoute(
                     name: "adminProducts",
-                    pattern: "admin/product/{id}",
+                    pattern: "admin/products/{id}",
                     defaults: new { controller = "Admin", action = "EditProduct" }
                 );
+
+                endpoints.MapControllerRoute(
+                   name: "adminProducts",
+                   pattern: "admin/deleteproduct",
+                   defaults: new { controller = "Admin", action = "DeleteProduct" }
+               );
+
                 endpoints.MapControllerRoute(
                     name: "adminCategory",
                     pattern: "admin/category",
@@ -129,9 +136,15 @@ namespace ETICARET.WebUI
                 );
                 endpoints.MapControllerRoute(
                     name: "adminCategory",
-                    pattern: "admin/category/{id}",
+                    pattern: "admin/categories/{id}",
                     defaults: new { controller = "Admin", action = "EditCategory" }
                 );
+
+                endpoints.MapControllerRoute(
+                  name: "adminCategory",
+                  pattern: "admin/deletecategory",
+                  defaults: new { controller = "Admin", action = "DeleteCategory" }
+              );
                 endpoints.MapControllerRoute(
                     name: "cart",
                     pattern: "cart",

@@ -278,5 +278,85 @@ namespace ETICARET.WebUI.Controllers
             }
 
         }
+
+        public async Task<IActionResult> Manage()
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            if(user  == null)
+            {
+                TempData.Put("message", new ResultModel()
+                {
+                    Title = "Hesap Yönetimi",
+                    Message = "Kullanıcı bulunamadı",
+                    Css = "danger"
+                });
+
+                return View();
+            }
+
+            var model = new AccountModel()
+            {
+                FullName = user.FullName,
+                UserName = user.UserName,
+                Email = user.Email
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Manage(AccountModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData.Put("message", new ResultModel()
+                {
+                    Title = "Hesap Yönetimi",
+                    Message = "Lütfen bilgilerinizi kontrol ediniz",
+                    Css = "danger"
+                });
+                return View(model);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if(user == null)
+            {
+                TempData.Put("message", new ResultModel()
+                {
+                    Title = "Hesap Yönetimi",
+                    Message = "Kullanıcı bulunamadı",
+                    Css = "danger"
+                });
+                return View(model);
+            }
+
+            user.FullName = model.FullName;
+            user.UserName = model.UserName;
+            user.Email = model.Email;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                TempData.Put("message", new ResultModel()
+                {
+                    Title = "Hesap Yönetimi",
+                    Message = "Hesap bilgileriniz güncellenmiştir",
+                    Css = "success"
+                });
+
+                return RedirectToAction("Index","Home");
+            }
+
+            TempData.Put("message", new ResultModel()
+            {
+                Title = "Hesap Yönetimi",
+                Message = "Hesap bilgilerinizi güncellenemedi, lütfen tekrar deneyiniz",
+                Css = "danger"
+            });
+
+            return View(model);
+        }
     }
 }
