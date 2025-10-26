@@ -21,6 +21,7 @@ namespace ETICARET.WebUI.Controllers
         }
         public IActionResult Index()
         {
+
             return View();
         }
     }
