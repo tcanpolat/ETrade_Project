@@ -63,7 +63,7 @@ namespace ETICARET.DataAccess.Concrete.EfCore
             using (var context = new DataContext())
             {
 
-                var products = context.Products.AsQueryable();
+                var products = context.Products.Include("Images").AsQueryable();
 
                 if (!string.IsNullOrEmpty(category) && category != "all")
                 {
